@@ -491,6 +491,17 @@ func TestServer_ExplicitResponseCodes(t *testing.T) {
 
 	_, err = r.LookupTXT(context.Background(), "bar.io")
 	assertNoError(t, err)
+
+	// Make sure calling Reset clears previously set response codes.
+	srv.Reset()
+	srv.AppendRR("foo.io.", RRTypeTXT, "one")
+	srv.AppendRR("foo.io.", RRTypeA, "1.2.3.4")
+
+	_, err = r.LookupTXT(context.Background(), "foo.io")
+	assertNoError(t, err)
+
+	_, err = r.LookupHost(context.Background(), "foo.io")
+	assertNoError(t, err)
 }
 
 func assertNoError(t *testing.T, err error) {

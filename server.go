@@ -503,6 +503,7 @@ func (s *Server) Reset() {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.r.Zones = make(map[string]Zone)
+	s.rcodes = make(map[string]int)
 }
 
 // AppendRR appends a resource record to the zone for the given name. If the
